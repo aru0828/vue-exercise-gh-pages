@@ -128,19 +128,33 @@
     <thead>
     </thead>
     <tbody>
-      <tr v-for="(item, key) in data" :item="item" :key="key">
-        <td>{{ item.name }}</td>
-        <td>{{ item.cash }}</td>
-        <td>{{ item.icash }}</td>
-      </tr>
+      <tr is="rowcomponent" v-for="(item, key) in data" :person="item"  :key="key"></tr>
+     
     </tbody>
   </table>
+  
 </div>
 
+
+<script type="text/x-template" id="trTemplate">
+  <tr>
+    <td>{{ person.name }}</td>
+    <td>{{ person.cash }}</td>
+    <td>{{ person.icash }}</td>
+  </tr>
+</script>
+
 <script>
+
+Vue.component('rowcomponent', {
+  props:['person'],
+  template:'#trTemplate'
+})
+
 var app = new Vue({
   el: '#app',
   data: {
+   
     data: [
       {
         name: '小明',
