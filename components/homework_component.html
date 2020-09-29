@@ -128,55 +128,91 @@
 </div>
 
 <div id="app">
-  <select name="" id="" class="form-control mb-3">
+  <select name="" id="" class="form-control mb-3" v-model="filter">
     <option value="">--- 請選擇城市 ---</option>
+    <option v-for="county in location" :key="county" :value="county" >{{county}}</option>
   </select>
   <div>
     <h4>關注城市</h4>
-    <div class="card-columns">
-      <div class="card status-aqi2">
-        <div class="card-header">苗栗縣 - 三義
-          <a href="#" class="float-right"><i class="fas fa-star"></i></a>
-        </div>
-        <div class="card-body">
-          <ul class="list-unstyled">
-            <li>AQI 指數: 54</li>
-            <li>PM2.5: 8</li>
-            <li>說明: 普通</li>
-          </ul>
-          2018-05-20 16:00
-        </div>
-      </div>
+
+    <div class="row">
+      <cardcomponent v-for="(item, index) in stared" :item="item" :key="index" ></cardcomponent>
     </div>
+    
+
+
+    
   </div>
   
   <hr>
-  <div class="card-columns">
-    <div class="card status-aqi2">
-      <div class="card-header">苗栗縣 - 三義
-        <a href="#" class="float-right"><i class="far fa-star"></i></a>
+
+
+<div class="row">
+  <cardcomponent v-for="(item, index) in filterData" :item="item" :key="index" @newevent="addStared"></cardcomponent>
+</div> 
+
+</div>
+
+
+<script type="text/x-template" id="card">
+  <div class="mb-3 col-4">
+    <div class="card" :class="{ 'status-aqi2' : item.Status === '普通' ,
+                                  'status-aqi3' : item.Status === '對敏感族群不健康' ,
+                                  'status-aqi4' : item.Status === '對所有族群不健康' ,
+                                  'status-aqi5' : item.Status === '非常不健康' ,
+                                  'status-aqi6' : item.Status === '危害' ,
+                               }">
+      <div class="card-header">{{item.County}}- {{item.SiteName}}
+        <a href="#" class="float-right" @click.prevent="clickStared(item)" v-if="isStared"><i class="fa fa-star"></i></a>
+        <a href="#" class="float-right" @click.prevent="clickStared(item)" v-if="!isStared"><i class="far fa-star"></i></a>
       </div>
       <div class="card-body">
         <ul class="list-unstyled">
-          <li>AQI 指數: 54</li>
-          <li>PM2.5: 8</li>
-          <li>說明: 普通</li>
+          <li>AQI 指數: {{item.AQI}}</li>
+          <li>PM2.5: {{item.PM2}}</li>
+          <li>說明: {{item.Status}}</li>
         </ul>
-      2018-05-20 16:00
+      {{item.PublishTime}}
       </div>
     </div>
   </div>
-</div>
+</script>
+
+
 
 <script>
 // API 來源
-// https://opendata.epa.gov.tw/Data/Contents/AQI/
+// https://opendata.epa.gov.tw/Data/Contents/AQI/>
+
+Vue.component('cardcomponent', {
+  props:['item'],
+  template:'#card',
+
+  data(){
+    return {
+      isStared:false,
+    }
+  },
+  
+  methods:{
+    clickStared(item){
+      console.log(item + '內層');
+      this.isStared = !this.isStared;
+      console.log(this.isStared)
+      //將元件內獨立的isStared傳入父組件 再由父組件操控星星是否實心
+      this.$emit('newevent', item, this.isStared);
+      
+    }
+  }
+  
+})
 
 var app = new Vue({
   el: '#app',
   data: {
     data: [],
     location: [],
+    //關注用
     stared: [],
     filter: '',
   },
@@ -185,13 +221,42 @@ var app = new Vue({
     getData() {
       const vm = this;
       const api = 'http://opendata2.epa.gov.tw/AQI.json';
-
+      
       // 使用 jQuery ajax
       $.get(api).then(function( response ) {
         vm.data = response;
-        console.log(response)
+        
+        //作為select 的選項
+        vm.data.forEach(item => {
+          if(vm.location.indexOf(item.County) === -1){
+             vm.location.push(item.County);
+          }
+        });
       });
     },
+
+    addStared(item, isStared){
+      console.log(isStared)
+      this.stared.push(item);
+    }
+
+    
+  },
+
+  computed:{
+    filterData:function(){
+      let vm = this;
+      //一開始先回傳原始資料
+      if(!vm.filter){
+        return vm.data;
+      }
+      //選擇城市才過濾
+      return  vm.data.filter(item => item.County === vm.filter)
+    }
+  },
+
+  mounted(){
+    this.getData();
   }
 });
 </script>
