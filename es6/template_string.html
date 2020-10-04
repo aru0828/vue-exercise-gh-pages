@@ -120,15 +120,35 @@ const people = [
     friends: 0
   }
 ]
-let originString = '我叫做 ' + people[0].name;
-let originUl = '<ul>\
-  <li>我叫做 ' + people[0].name + '</li>\
-  <li>我叫做 ' + people[1].name + '</li>\
-  <li>我叫做 ' + people[2].name + '</li>\
-</ul>';
+// let originString = '我叫做 ' + people[0].name;
+// let originUl = '<ul>\
+//   <li>我叫做 ' + people[0].name + '</li>\
+//   <li>我叫做 ' + people[1].name + '</li>\
+//   <li>我叫做 ' + people[2].name + '</li>\
+// </ul>';
 
-console.log(originString, originUl);
+// console.log(originString, originUl);
 
+let tempString = `我叫做 ${people[0].name}`
+let tempUl = `
+  <ul>
+    <li> ${people[0].name} </li>
+    <li> ${people[1].name}  </li>
+    <li> ${people[2].name}  </li>
+  </ul>
+`
+
+let jsUl = `
+  <ul>
+    ${people.map( person => `<li>${person.name}</li>`).join("")}
+  </ul>
+`
+
+console.log(tempString, tempUl, jsUl);
+
+console.log(people.map(person => `<li>${person.name}</li>`))
+
+console.log([1, 2, 3].toString());
 </script> 
         </div>
       </div>

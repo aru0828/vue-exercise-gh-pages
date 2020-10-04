@@ -120,21 +120,54 @@ const people = [
     money: 60000
   },
   {
-    name: '老媽',
-    money: Infinity
-  }
+    name: '闢還',
+    money: 2555
+  },
+  {
+    name: '大便',
+    money: 22300
+  },
+  // {
+  //   name: '老媽',
+  //   money: Infinity
+  // }
 ];
 
-// forEach 與 map
-// 將所有物件增加 icash 有多少金額的欄位
+// forEach 與 map 最大的差異在於 map 會 return
+// map不適合當作過濾使用 因為即使 return 放在if內沒有觸發 依然會return undefiend
+
+
+//將所有物件增加 icash 有多少金額的欄位
+// let forEachPeople = people.forEach( (item, index) => {
+//   return item.icash = item.money + 500;
+// })
+
+// let mapPeople = people.map( (item, index) => {
+//   return item.icash = item.money + 500;
+// })
+// console.log(mapPeople, forEachPeople);
 
 
 // filter
 // 挑出金額少於 5000 的物件
+// let filterPeople = people.filter(item => {
+//   if(item.money < 5000){
+//     return item;
+//   }
+// })
+// console.log(filterPeople);
 
 // find
 // 1. 找到金額 = 500 的物件
 // 2. 找到 > 5000 的物件
+
+// let findPeople = people.find(item => {
+//   if(item.money =  500){
+//     return item;
+//   }
+// })
+// console.log(findPeople);
+
 
 // every
 // 1. 所有物件是否都超過 10000 元
@@ -146,6 +179,18 @@ const people = [
 
 // reduce
 // 去除掉老媽，請問剩下的人有多少錢？
+
+let total = people.reduce( (prev, item) =>{
+  return prev + item.money;
+}, 0)
+
+let max = people.reduce( (prev, item) =>{
+  console.log(prev, item.money)
+  return Math.max(prev, item.money);
+}, 0)
+
+console.log('總數' + total)
+console.log('最大值' + max);
 
 </script> 
         </div>
