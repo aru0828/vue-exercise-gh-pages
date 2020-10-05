@@ -106,27 +106,21 @@
 <script>
 // #1 改寫傳統函式
 // 將以下改寫成 Arrow Function，並嘗試縮寫形式
-// var callSomeone = (someone) => someone + '吃飯了';
-// console.log(callSomeone('小明'))
+var callSomeone = function (someone) {
+  return someone + '吃飯了'
+}
+console.log(callSomeone('小明'))
 
 // # 沒有 arguments 參數
 // 將以下改寫成 Arrow Function，並觀察差異
-
-// 箭頭函式沒有arguments 必須使用其餘參數方法當作替代方案
-
-// const updateEasyCard =  (...arg) => {
+// const updateEasyCard = function () {
 //   let cash = 0;
-//   console.log(arg); // arguments is not defined
+//   console.log(arguments); // arguments is not defined
 // }
 // updateEasyCard(10, 50, 100, 50, 5, 1, 1, 1, 500);
 
 
 // # This 綁定的差異
-
-//傳統函式的this 取決於呼叫的方法
-//ex auntie.callName 是在auntie底下呼叫 故this為auntie
-//   windows.setTimeout 故 this為 windows 全域
-
 // var name = '全域阿婆'
 // var auntie = {
 //   name: '漂亮阿姨',
@@ -145,9 +139,8 @@
 // var auntie = {
 //   name: '漂亮阿姨',
 //   callName () { 
-//     const vm = this;
 //     setTimeout(function () {
-//       console.log(vm);
+//       console.log(this);
 //     }, 10);
 //   }
 // }

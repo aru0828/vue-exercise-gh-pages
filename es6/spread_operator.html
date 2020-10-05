@@ -105,16 +105,10 @@
 
 <script>
 // #1 使用展開語法，合併以下陣列
-// let groupA = ['小明', '杰倫', '阿姨'];
-// let groupB = ['老媽', '老爸'];
-// let allGroup = [...groupA, ...groupB];
-// console.log(...groupA)
-// console.log(allGroup);
+let groupA = ['小明', '杰倫', '阿姨'];
+let groupB = ['老媽', '老爸'];
 
 // #2 淺複製觀念說明 (shallow copy)
-
-//Array Object 都是傳址
-//透過[...groupA] 將陣列中的值抓出來再重新包裝成一個陣列 兩者就不是同一個參考
 // let groupA = ['小明', '杰倫', '阿姨'];
 // let groupB = groupA;
 // groupB.push('阿明');
@@ -122,36 +116,27 @@
 
 
 // #3 類陣列觀念說明
-
-//類陣列 跟陣列很像 但能使用的方法較少 透過將類陣列的值取出 再重新包裝成一個陣列
-
 // let doms = document.querySelectorAll('li');
-// let newDoms = [...doms];
-// console.log('上面類陣列 下面陣列')
-// console.log( doms , newDoms);
+// console.log(doms);
 
 // #4 類陣列觀念說明
 // var originCash = 1000;
 // function updateEasyCard() {
-
-//   //arg為類陣列 不過沒有透過展開成一個新陣列 無法執行reduce函數
-//   let arg = [...arguments];
-//   let sum = arg.reduce(function (accumulator, currentValue) {
-//     return accumulator + currentValue;
-//   }, 0);
-//   console.log('我有 ' + sum + ' 元');
+//   let arg = arguments
+//   // let sum = arg.reduce(function (accumulator, currentValue) {
+//   //   return accumulator + currentValue;
+//   // }, 0);
+//   // console.log('我有 ' + sum + ' 元');
 // }
 // updateEasyCard(0); // 我有 1000 元
 // updateEasyCard(10, 50, 100, 50, 5, 1, 1, 1, 500); // 我有 718 元
 
 
 // #5 其餘參數
-
-//會將多餘的參數存放在其餘參數中
-function moreMoney(ming, ...money) {
-   console.log(ming ,money);
-}
-moreMoney('ming', 100, 100, 100)
+// function moreMoney(...money) {
+//   // console.log(money);
+// }
+// moreMoney(100, 100, 100)
 </script> 
         </div>
       </div>
