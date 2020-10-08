@@ -97,63 +97,55 @@
 </div>
 
 <div id="app">
-  <input type="email" v-model="email" v-focus v-validator="{ className: 'form-control' }">
+  <input type="email" v-model="email" v-focus v-validator="{className : 'form-control'}">
 </div>
 
 <script>
 // 官方文件 https://cn.vuejs.org/v2/guide/custom-directive.html
+
+//新增 directive 架構  'focus'為自定義名稱 inserted 為錨點 其他錨點可參考上方文件 el為文件中可帶入參數 
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
   }
 })
 
+
 Vue.directive('validator', {
-  update: function(el, binding, vnode) {
-    console.log('update', el.value, el.className, vnode);
-
-    // 尋找當前的 model 名稱
-    var currentModel = vnode.data.directives.find(function(o) {
-        return o.name === 'model';
-    }).expression;
-    
-    // 從當前 Model 取值
-    var value = vnode.context[currentModel];
-
-    // Email validate
-    var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if (!re.test(value)) {
-      el.className = 'form-control is-invalid'
-    } else {
-      el.className = 'form-control is-valid'
-    }
+  bind:function(el, binding ,  vnode){
+    console.log( el, binding ,  vnode);
   },
-  bind: function(el, binding, vnode) {
-    console.log('bind', el, binding, vnode);
-    el.className = binding.value.className
 
-    var currentModel = vnode.data.directives.find(function(o) {
-        return o.name === 'model';
-    }).expression;
-    var value = vnode.context[currentModel];
 
-    var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if (!re.test(value)) {
-      el.className = 'form-control is-invalid'
+  update:function(el, binding ,  vnode){
+     // Email validate
+     var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (!re.test(el.value)) {
+      el.className = `${binding.value.className}  is-invalid`
     } else {
       el.className = 'form-control is-valid'
     }
+    //
+
+    // 尋找當前的 model 名稱 //可以從console的vnode中往下找
+    let findModel = vnode.data.directives.find(item =>{
+      return item.name === 'model'
+    }).expression;
+    //
+
+    //找到v-model之後 在透過vnode內找到 vnode.content
+    console.log(findModel);
+    console.log(vnode.context.findModel);
   }
-});
+})
+
 
 var app = new Vue({
   el: '#app',
   data: {
     email: 'aaa',
   },
-  mounted: function() {
-    console.log('Vue init:', this)
-  }
+
 });
 </script>
 

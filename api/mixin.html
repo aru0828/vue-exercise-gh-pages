@@ -115,15 +115,11 @@
 
 <script>
 // mixin 是多個混合的概念
+// mixin使用需先將它 記錄在一個變數中 再利用mixins呼叫 mixins為陣列格式 代表可以一次呼叫很多個mixin
 
-Vue.component('row-component', {
-  props: ['item'],
-  data: function() {
-    return {
-      data: {},
-    }
-  },
-  template: '#row-component',
+
+//記錄在變數中
+let filterMixin = {
   filters: {
     dollarSign: function (n) {
       return `$ ${n}`
@@ -134,9 +130,27 @@ Vue.component('row-component', {
       });
     }
   },
+};
+
+let mountedMixin = {
   mounted () {
     console.log('這段是 Mixin 產生')
   }
+};
+//記錄在變數中
+
+
+Vue.component('row-component', {
+  props: ['item'],
+  data: function() {
+    return {
+      data: {},
+    }
+  },
+  template: '#row-component',
+  //mixins 用法
+  mixins:[filterMixin, mountedMixin],
+ 
 });
 
 

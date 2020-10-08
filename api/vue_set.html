@@ -127,15 +127,20 @@ var child = {
   },
   methods: {
     addData: function() {
-      this.data.item = {
-        name: this.item.name
-      }
+      // this.data.item = {
+      //   name: this.item.name
+      // }
+
+      
+      //如果資料沒有被預先定義在data()內 ,　資料就可能產生無法正常使用vue語法的狀況
+      //在 Vue 中，建立實體後才加入的屬性因為沒有被給予 getter 及 setter ，所以不會被響應系統察覺
+      //透過this.$set 強行跟vue綁定 , 確保可以使用Vue語法
+      this.$set(this.data, 'item', {
+         name: this.item.name
+      })
       console.log(this.data, this);
 
-      // this.$set(this.data, 'item', {
-      //   name: this.item.name
-      // });
-      // console.log(this.data, this);
+     
     }
   },
   mounted: function() {
